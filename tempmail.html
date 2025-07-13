@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oggy Temp Mail</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e1e; /* Dark mode background */
+    color: #fff; /* Dark mode text color */
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2a2a2a; /* Dark mode container background */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Adjust shadow color for dark mode */
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+button {
+    padding: 10px 80px;
+    font-size: 18px;
+    border: none;
+    border-radius: 7px;
+    background-color: #4CAF50; /* Button background color */
+    color: #fff; /* Text color */
+    cursor: pointer;
+    display: inline-block;
+    margin: 10px auto;
+    transition: background-color 0.6s; /* Smooth transition */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker background color on hover */
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: calc(100% - 80px);
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    margin: 10px auto;
+    background-color: #555; /* Dark mode input background */
+    color: #fff; /* Dark mode input text color */
+}
+
+#emailResult,
+#emailDetails {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #666; /* Dark mode result background */
+    color: #fff; /* Dark mode result text color */
+}
+
+#emailResult:hover {
+    cursor: pointer;
+    background-color: #555; /* Adjust hover color for dark mode */
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>TempMail</h1>
+
+<!-- First API for getting a new email address -->
+<button onclick="getNewEmail()">New Email</button>
+<div id="emailResult" onclick="copyEmail()"></div>
+
+<hr>
+
+<!-- Second API for viewing email inbox -->
+<input type="text" id="inputEmail" placeholder="Enter Email Address">
+<button onclick="viewEmail()">View</button>
+<div id="emailDetails"></div>
+</div>
+
+<script>
+// Function to fetch a new email address
+function getNewEmail() {
+    fetch('https://sms-bomb.vercel.app/api/tempmailnew.php')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('emailResult').innerText = "" + data.email;
+    })
+    .catch(error => console.error('Error fetching new email:', error));
+}
+
+// Function to view email details
+function viewEmail() {
+    var email = document.getElementById('inputEmail').value;
+    fetch(`https://sms-bomb.vercel.app/api/tempmailinbox.php?email=${email}`)
+    .then(response => response.json())
+    .then(data => {
+        var emailDetails = document.getElementById('emailDetails');
+        if (data.length === 0) {
+            emailDetails.innerHTML = "<p>No message</p>";
+        } else {
+            emailDetails.innerHTML = `
+            <h2>Email Details</h2>
+            <p>From: ${data[0].from}</p>
+            <p><b>Subject: ${data[0].subject}</b></p>
+            <p>Body: ${data[0].body}</p>
+            <p>Time: ${data[0].date}</p>
+            `;
+        }
+    })
+    .catch(error => console.error('Error fetching email details:', error));
+}
+
+// Function to copy email address to clipboard
+function copyEmail() {
+    var email = document.getElementById('emailResult').innerText;
+    var tempInput = document.createElement('input');
+    tempInput.value = email;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert('Email address copied to clipboard: ' + email);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Cricket Scores</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #2c3e50;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            color: #ecf0f1;
+        }
+
+        h1 {
+            color: #ecf0f1;
+            margin-bottom: 20px;
+        }
+
+        .liveScoreContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .liveScore {
+            background: #34495e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 300px;
+            width: 100%;
+            margin: 20px;
+            color: #ecf0f1;
+            transition: background 0.3s;
+        }
+
+        .liveScore:hover {
+            background: #2c3e50;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #f3ff0a;
+        }
+
+        p {
+            margin: 8px 0;
+            line-height: 1.4;
+            color: #ecf0f1;
+        }
+
+        hr {
+            border: 0;
+            clear: both;
+            display: block;
+            width: 100%;
+            background-color: #ecf0f1;
+            height: 1px;
+            margin: 15px 0;
+        }
+
+        .teamScore {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ecf0f1;
+            background: #e67e2a;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .teamInfo {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .teamCard {
+            background-color: #6519bd;
+            border-radius: 8px;
+            padding: 12px;
+            flex: 1;
+            margin: 0 5px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .teamName {
+            color: #f3ff0a;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .statusStumps {
+            color: red;
+            font-weight: bold;
+        }
+
+        .groundInfo {
+            font-size: 14px;
+            color: #bdc3c7;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Cricket Scores</h1>
+    <div class="liveScoreContainer" id="liveScoreContainer"></div>
+
+    <script>
+        async function fetchCricketScores() {
+            try {
+                const response = await fetch('https://sms-bomb.vercel.app/api/cricket.php');
+                const data = await response.json();
+
+                if (data && data.trendingMatches && data.trendingMatches.matches.length > 0) {
+                    const matches = data.trendingMatches.matches.slice(0, 5);
+
+                    const container = document.getElementById('liveScoreContainer');
+                    container.innerHTML = ''; // Clear previous content
+
+                    matches.forEach((match, index) => {
+                        const statusText = match.status === '{{MATCH_START_TIME}}' ? 'The match will start soon' : match.status || '';
+                        const statusColor = match.status === "Stumps" ? "red" : "#fff";
+
+                        const groundInfo = `Stadium: ${match.ground.longName || ''}, ${match.ground.country.name || ''}, Capacity: ${match.ground.capacity || ''}`;
+
+                        const scoreHTML = `
+                            <div class="liveScore">
+                                <h2>${match.series.longName || ''}</h2>
+                                <p>Season: ${match.series.season || ''}</p>
+                                <hr>
+                                <p>Status: <span class="statusStumps" style="color: ${statusColor};">${statusText}</span></p>
+                                <p>${match.statusText || ''}</p>
+                                <p class="groundInfo">${groundInfo}</p>
+                                <p>Format: ${match.format || ''}</p>
+                                <hr>
+                                <div class="teamInfo">
+                                    <div class="teamCard">
+                                        <p class="teamScore">${match.teams[0]?.team?.abbreviation || ''} ${match.teams[0]?.score || ''}</p>
+                                        <p class="teamName">${match.teams[0]?.team?.name || ''}</p>
+                                        <p>${match.teams[0]?.scoreInfo || ''}</p>
+                                    </div>
+                                    <div class="teamCard">
+                                        <p class="teamScore">${match.teams[1]?.team?.abbreviation || ''} ${match.teams[1]?.score || ''}</p>
+                                        <p class="teamName">${match.teams[1]?.team?.name || ''}</p>
+                                        <p>${match.teams[1]?.scoreInfo || ''}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        container.innerHTML += scoreHTML;
+                    });
+                } else {
+                    console.error('No data available or unexpected format.');
+                }
+            } catch (error) {
+                console.error('Error fetching cricket scores:', error);
+            }
+        }
+
+        // Fetch the cricket scores every 10 seconds
+        setInterval(fetchCricketScores, 10000);
+
+        // Initial fetch
+        fetchCricketScores();
+    </script>
+</body>
+</html>

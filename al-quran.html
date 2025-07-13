@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL-Quran</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .buttons-container {
+            margin-bottom: 20px;
+        }
+
+        .buttons-container button {
+            display: block;
+            width: 100%;
+            padding: 20px 40px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 23px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .buttons-container button:hover {
+            background-color: #45a049;
+        }
+
+        .ayah {
+            margin-bottom: 20px;
+            padding: 5px;
+            font-size: 20px;
+            text-align: center;
+            border: 1px solid #dd0;
+            border-radius: 8px;
+            background-color: #ffffcc;
+        }
+        
+        .ayah .bnayat {
+        margin-bottom: 20px;
+        padding: 1px;
+        font-size: 18px;
+        text-align: left;
+        border-radius: 8px;
+        background-color: #ffffcc; /* Add font-family */
+        }
+        
+
+        .ayah .ayatno {
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+        }
+
+        /* Styles for different elements */
+        .ayah .ayat {
+        margin-bottom: 20px;
+        padding: 1px;
+        font-size: 30px;
+        text-align: center;
+        border: 1px solid #333;
+        border-radius: 8px;
+        background-color: #ffffcc;
+        font-family: 'AlMushaf', Arial, sans-serif; /* Add font-family */
+        }
+        
+        .ayah .ruku {
+        font-size: 15px;
+        color: #333; /* Change color as needed */
+        }
+
+        .ayah .manzil {
+        font-size: 15px;
+        text-align: right;
+        flex: 0 0 auto;
+            color: #333; /* Change color as needed */
+        }
+
+        .ayah .page {
+        font-size: 15px;
+            color: #333;
+            text-align: right; /* Change color as needed */
+        }
+
+        hr {
+            margin-top: 20px;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .list-view .ayah {
+            display: block;
+        }
+
+        .grid-view .ayah {
+            display: inline-block;
+            width: calc(50% - 20px);
+            margin-right: 20px;
+            vertical-align: top;
+        }
+
+        @media (max-width: 600px) {
+            .grid-view .ayah {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Loading animation */
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="headerText">AL-QURAN</h1>
+    <div class="buttons-container">
+        <button onclick="fetchData(1)">আল ফাতিহা (Al-Fatiha)</button>
+        <button onclick="fetchData(2)">আল বাকারা (Al-Baqara)</button>
+        <button onclick="fetchData(3)">আলে ইমরান (Aal-E-Imran)</button>
+        <button onclick="fetchData(4)">আন নিসা (An-Nisa)</button>
+        <button onclick="fetchData(5)">আল-মায়েদাহ্ (Al-Maidah)</button>
+        <button onclick="fetchData(6)">আল-আন‘আম (Al-An'am)</button>
+        <button onclick="fetchData(7)">আল আরাফ (Al-A'raf)</button>
+        <button onclick="fetchData(8)">আল আনফাল (Al-Anfal)</button>
+        <button onclick="fetchData(9)">আত-তাওবা (At-Tawbah)</button>
+        <button onclick="fetchData(10)">ইয়া সিন (Yunus)</button>
+        <button onclick="fetchData(11)">হুদ (Hud)</button>
+        <button onclick="fetchData(12)">ইউসুফ (Yusuf)</button>
+        <button onclick="fetchData(13)">আর রা'দ (Ar-Ra'd)</button>
+        <button onclick="fetchData(14)">ইবরাহিম (Ibrahim)</button>
+        <button onclick="fetchData(15)">আল হিজর (Al-Hijr)</button>
+        <button onclick="fetchData(16)">আন নাহল (An-Nahl)</button>
+        <button onclick="fetchData(17)">আল ইসরা (Al-Isra)</button>
+        <button onclick="fetchData(18)">আল কাহফ (Al-Kahf)</button>
+        <button onclick="fetchData(19)">মারিয়াম (Maryam)</button>
+        <button onclick="fetchData(20)">তাহা (Ta-Ha)</button>
+        <button onclick="fetchData(21)">আল আনবিয়া (Al-Anbiya)</button>
+        <button onclick="fetchData(22)">আল হাজ্জ (Al-Hajj)</button>
+        <button onclick="fetchData(23)">আল মুমিনুন (Al-Muminun)</button>
+        <button onclick="fetchData(24)">আন নূর (An-Nur)</button>
+        <button onclick="fetchData(25)">আল ফুরকান (Al-Furqan)</button>
+        <button onclick="fetchData(26)">আশ শুআরা (Ash-Shu'ara)</button>
+        <button onclick="fetchData(27)">আন নামল (An-Naml)</button>
+        <button onclick="fetchData(28)">আল কাসাস (Al-Qasas)</button>
+        <button onclick="fetchData(29)">আল আংকাবুত (Al-Ankabut)</button>
+        <button onclick="fetchData(30)">আর রুম (Ar-Rum)</button>
+        <button onclick="fetchData(31)">লুকমান (Luqman)</button>
+        <button onclick="fetchData(32)">আস সাজ্জাদা (As-Sajda)</button>
+        <button onclick="fetchData(33)">আল আহজাব (Al-Ahzab)</button>
+        <button onclick="fetchData(34)">সবা (Saba)</button>
+        <button onclick="fetchData(35)">ফাতির (Fatir)</button>
+        <button onclick="fetchData(36)">ইয়া সিন (Ya-Sin)</button>
+        <button onclick="fetchData(37)">আস সাাফা (As-Saffat)</button>
+        <button onclick="fetchData(38)">সাদ (Sad)</button>
+        <button onclick="fetchData(39)">আল জুমু'হ (Az-Zumar)</button>
+        <button onclick="fetchData(40)">আল মু'মিন (Ghafir)</button>
+        <button onclick="fetchData(41)">ফুসিলাত (Fussilat)</button>
+        <button onclick="fetchData(42)">আশ শুরা (Ash-Shura)</button>
+        <button onclick="fetchData(43)">আয়াত (Az-Zukhruf)</button>
+        <button onclick="fetchData(44)">আল দুখান (Ad-Dukhan)</button>
+        <button onclick="fetchData(45)">আল জাসিয়া (Al-Jathiyah)</button>
+        <button onclick="fetchData(46)">আল আহকাফ (Al-Ahqaf)</button>
+        <button onclick="fetchData(47)">মুহাম্মাদ (Muhammad)</button>
+        <button onclick="fetchData(48)">আল ফাত্‌হ (Al-Fath)</button>
+        <button onclick="fetchData(49)">আল হুজুরাত (Al-Hujurat)</button>
+        <button onclick="fetchData(50)">আল ক্যাফিরুন (Qaf)</button>
+        <button onclick="fetchData(51)">আয়াত (Az-Zariyat)</button>
+        <button onclick="fetchData(52)">আত তোর (At-Tur)</button>
+        <button onclick="fetchData(53)">আল নাজম (An-Najm)</button>
+        <button onclick="fetchData(54)">আল কামার (Al-Qamar)</button>
+        <button onclick="fetchData(55)">আর রাহমান (Ar-Rahman)</button>
+        <button onclick="fetchData(56)">আল ওয়াক্যাহ্‌ (Al-Waqi'ah)</button>
+        <button onclick="fetchData(57)">আল হাদীদ (Al-Hadid)</button>
+        <button onclick="fetchData(58)">আল মুজাদিলাহ (Al-Mujadila)</button>
+        <button onclick="fetchData(59)">আল হাশ্র (Al-Hashr)</button>
+        <button onclick="fetchData(60)">আল মুম্তাহিনাহ্ (Al-Mumtahanah)</button>
+        <button onclick="fetchData(61)">আস সাফ (As-Saff)</button>
+        <button onclick="fetchData(62)">আল জুম'আ (Al-Jumu'ah)</button>
+        <button onclick="fetchData(63)">আল মুনাফিকুন (Al-Munafiqun)</button>
+        <button onclick="fetchData(64)">আত গাবান (At-Taghabun)</button>
+        <button onclick="fetchData(65)">আত তালাক (At-Talaq)</button>
+        <button onclick="fetchData(66)">আত তাহরীম (At-Tahrim)</button>
+        <button onclick="fetchData(67)">আল মুলক (Al-Mulk)</button>
+        <button onclick="fetchData(68)">আল কালাম (Al-Qalam)</button>
+        <button onclick="fetchData(69)">আল হাক্কাহ্ (Al-Haqqah)</button>
+        <button onclick="fetchData(70)">আল মাআরিজ (Al-Ma'arij)</button>
+        <button onclick="fetchData(71)">নূহ (Nuh)</button>
+        <button onclick="fetchData(72)">আল জিন (Al-Jinn)</button>
+        <button onclick="fetchData(73)">আল মুজাম্মিল (Al-Muzzammil)</button>
+        <button onclick="fetchData(74)">আল মুদাত্তির (Al-Muddathir)</button>
+        <button onclick="fetchData(75)">আল কিয়ামাহ (Al-Qiyamah)</button>
+        <button onclick="fetchData(76)">আল ইনসান (Al-Insan)</button>
+        <button onclick="fetchData(77)">আল মুরসালাত (Al-Mursalat)</button>
+        <button onclick="fetchData(78)">আন নাবা (An-Naba)</button>
+        <button onclick="fetchData(79)">আন নাজিয'আত (An-Nazi'at)</button>
+        <button onclick="fetchData(80)">আবা'সা (Abasa)</button>
+        <button onclick="fetchData(81)">আত তাকওয়ীর (At-Takwir)</button>
+        <button onclick="fetchData(82)">আল ইনফিতার (Al-Infitar)</button>
+        <button onclick="fetchData(83)">আল মুতাফফিফিন (Al-Mutaffifin)</button>
+        <button onclick="fetchData(84)">আল ইনশিকাক (Al-Inshiqaq)</button>
+        <button onclick="fetchData(85)">আল বুরুজ (Al-Buruj)</button>
+        <button onclick="fetchData(86)">আত তারিক (At-Tariq)</button>
+        <button onclick="fetchData(87)">আল আলা (Al-A'la)</button>
+        <button onclick="fetchData(88)">আল গাশিয়া (Al-Ghashiyah)</button>
+        <button onclick="fetchData(89)">আল ফাজর (Al-Fajr)</button>
+        <button onclick="fetchData(90)">আল বালাদ (Al-Balad)</button>
+        <button onclick="fetchData(91)">আশ শামস (Ash-Shams)</button>
+        <button onclick="fetchData(92)">আল লাইল (Al-Lail)</button>
+        <button onclick="fetchData(93)">আদ দুহা (Ad-Duha)</button>
+        <button onclick="fetchData(94)">আল ইনশিরাহ (Ash-Sharh)</button>
+        <button onclick="fetchData(95)">আত তিন (At-Tin)</button>
+        <button onclick="fetchData(96)">আল আলাক (Al-Alaq)</button>
+        <button onclick="fetchData(97)">আল কাদর (Al-Qadr)</button>
+        <button onclick="fetchData(98)">আল বায়িনাহ্ (Al-Bayyinah)</button>
+        <button onclick="fetchData(99)">আয়াত (Az-Zalzalah)</button>
+        <button onclick="fetchData(100)">আলাদিয়াত (Al-Adiyat)</button>
+        <button onclick="fetchData(101)">আল কারিয়াহ (Al-Qari'ah)</button>
+        <button onclick="fetchData(102)">আত তাকাসুর (At-Takathur)</button>
+        <button onclick="fetchData(103)">আল আসর (Al-Asr)</button>
+        <button onclick="fetchData(104)">আল হুমাজাহ (Al-Humazah)</button>
+        <button onclick="fetchData(105)">আল ফিল (Al-Fil)</button>
+        <button onclick="fetchData(106)">কুরাইশ (Quraish)</button>
+        <button onclick="fetchData(107)">আল মাউন (Al-Ma'un)</button>
+        <button onclick="fetchData(108)">আল কাওসার (Al-Kawthar)</button>
+        <button onclick="fetchData(109)">আল কাফিরুন (Al-Kafirun)</button>
+        <button onclick="fetchData(110)">আন নাসর (An-Nasr)</button>
+        <button onclick="fetchData(111)">আল মাসাদ (Al-Masad)</button>
+        <button onclick="fetchData(112)">আল ইখলাস (Al-Ikhlas)</button>
+        <button onclick="fetchData(113)">আল ফালাক (Al-Falaq)</button>
+        <button onclick="fetchData(114)">আন নাস (An-Nas)</button>
+    </div>
+    <div id="surahDetails"></div>
+    <div class="loader"></div>
+</div>
+
+<script>
+    async function fetchData(id) {
+        // Hide all buttons
+        const buttons = document.querySelectorAll('.buttons-container button');
+        buttons.forEach(button => {
+            button.style.display = 'none';
+        });
+
+        // Show loading spinner
+        const loader = document.querySelector('.loader');
+        loader.style.display = 'block';
+
+        try {
+            const api1Response = await fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.alafasy`);
+            const api1Data = await api1Response.json();
+            const api2Response = await fetch(`https://api.alquran.cloud/v1/surah/${id}/bn.bengali`);
+            const api2Data = await api2Response.json();
+
+            const surahDetails = document.getElementById('surahDetails');
+            const api1Surah = api1Data.data;
+            const api2Surah = api2Data.data;
+
+            const suraname = api1Surah.englishName;
+            const revelation = api1Surah.revelationType;
+            const ayatno = api1Surah.numberOfAyahs;
+
+            let content = `
+                <div class="ayah">
+                    <p>Surah: ${suraname}</p>
+                    <p>Revelation: ${revelation}</p>
+                    <p>Number of Ayat: ${ayatno}</p>
+                </div>
+            `;
+
+            for (let i = 0; i < api1Surah.ayahs.length; i++) {
+                const audio = api1Surah.ayahs[i].audio;
+                const ayat = api1Surah.ayahs[i].text;
+                const noofayat = api1Surah.ayahs[i].numberInSurah;
+                const manzil = api1Surah.ayahs[i].manzil;
+                const pageno = api1Surah.ayahs[i].page;
+                const ruku = api1Surah.ayahs[i].ruku;
+                const bnayat = api2Surah.ayahs[i].text;
+
+                content += `
+                    <div class="ayah">
+                        <p class="ayatno">Ayat: ${noofayat}</p>
+                        <p class="ayatno">Manzil: ${manzil}</p><p class="page">Page: ${pageno}</p>
+                        <audio controls>
+                            <source src="${audio}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                            </audio>
+                            <p class="ayat">${ayat}</p>
+                            <p class="bnayat">${bnayat}</p>
+                            <p class="ruku">Ruku: ${ruku}</p>
+                            </div>
+                            `;
+                            }
+                            
+                            surahDetails.innerHTML = content;
+                            document.getElementById('headerText').innerText = suraname;
+                            } catch (error) {
+                            console.error('Error fetching data:', error);
+                            // Handle error
+                            } finally {
+                            // Hide loading spinner
+                            loader.style.display = 'none';
+                            }
+                            }
+                            </script>
+                            
+                            </body>
+                            </html>

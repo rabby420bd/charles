@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banglalink Loan Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        #container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        b {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>Banglalink Loan Info</h1>
+
+        <label for="phoneNumber">Enter Phone Number:</label>
+        <input type="text" id="phoneNumber" placeholder="Enter phone number">
+        <button onclick="searchDeviceInfo()">Search</button>
+
+        <div id="result">
+            <p><b><center> <span id="deviceType"></span></center></p>
+            <p id="loanAmount" style="display: none;"><b>Loan Amount:</b> <span id="androidVersion"></span></p>
+            <p id="expireIn" style="display: none;"><b>Expire in:</b> <span id="numberType"></span></b></p>
+        </div>
+    </div>
+
+    <script>
+        function searchDeviceInfo() {
+            var phoneNumber = document.getElementById('phoneNumber').value;
+
+            // Validate Banglalink number format
+            var banglalinkRegex = /^(014|019)\d{8}$/;
+            if (!banglalinkRegex.test(phoneNumber)) {
+                alert('Please enter a valid Banglalink number starting with 014 or 019.');
+                return;
+            }
+
+            // Replace 'your_api_url' with the actual API endpoint
+            var apiUrl = 'https://sms-bomb.vercel.app/api/loan.php?phone=' + encodeURIComponent(phoneNumber);
+
+            // Make the API request
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.message) {
+                        document.getElementById('deviceType').innerText = data.message;
+                        document.getElementById('androidVersion').innerText = data.data.due_loan || ' ';
+                        document.getElementById('numberType').innerText = data.data.expires_in || ' ';
+
+                        // Display the previously hidden elements
+                        document.getElementById('loanAmount').style.display = 'block';
+                        document.getElementById('expireIn').style.display = 'block';
+                    } else {
+                        alert('No data found for the provided phone number.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert('Error fetching data. Please try again.');
+                });
+        }
+    </script>
+
+</body>
+</html>

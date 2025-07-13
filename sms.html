@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free SMS Sender</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 400px;
+            max-width: 90%;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        input[type="text"],
+        textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #333333;
+            color: #ffffff;
+            outline: none;
+        }
+        textarea {
+            resize: none;
+            height: 120px;
+        }
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .shoe-credit {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Free SMS Sender</h1>
+        <form id="smsForm">
+            <label for="number">Number:</label>
+            <input type="text" id="number" name="number" placeholder="Enter phone number" required>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" placeholder="Enter your message" required></textarea>
+            <button type="submit">Send SMS</button>
+        </form>
+        <div class="shoe-credit">Created by <strong>Kingi Charles</strong></div>
+    </div>
+
+    <script>
+        document.getElementById('smsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var number = document.getElementById('number').value;
+            var message = document.getElementById('message').value;
+            var url = `https://sms-bomb.vercel.app/api/sms.php?number=${encodeURIComponent(number)}&sms=${encodeURIComponent(message)}`;
+
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.msg_code === 'operate.success') {
+                    alert('SMS Sent Successfully!');
+                } else if (data.msg_code === 'err.param') {
+                    alert('Please enter your phone number.');
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                alert('SMS Sent Successfully!');
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

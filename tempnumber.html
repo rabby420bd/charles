@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temp Phone Number</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #333; /* Dark background color */
+  color: #fff; /* Light text color */
+}
+.container {
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #444; /* Darker container background color */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #45a049;
+}
+.line {
+  cursor: pointer;
+  padding: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+.result {
+  margin-top: 20px;
+  text-align: left;
+  border-top: 1px solid #ccc;
+  padding-top: 15px;
+}
+h1 {
+  margin-top: 0;
+}
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  width: calc(100% - 80px);
+  margin-bottom: 9px;
+  background-color: #555; /* Darker input background color */
+  color: #fff; /* Light text color for input */
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Generate Temporary Phone Number</h1>
+  <button class="button" onclick="fetchText()">Get Number</button>
+  <div id="line-output"></div>
+</div>
+
+<div class="container">
+  <h1>View Messages Received</h1>
+  <input type="text" id="phoneInput" placeholder="Enter temporary phone number">
+  <button class="button" onclick="search()">View Messages</button>
+  <div id="result" class="result"></div>
+</div>
+
+<script>
+function fetchText() {
+  fetch('https://sms-bomb.vercel.app/api/tempnumgen.php')
+    .then(response => response.text())
+    .then(text => {
+      const lines = text.split('\n');
+      const filteredLines = lines.filter(line => line.startsWith('+'));
+      const outputDiv = document.getElementById('line-output');
+      outputDiv.innerHTML = ''; // Clear previous content
+      const randomIndex = Math.floor(Math.random() * filteredLines.length);
+      const randomLine = filteredLines[randomIndex];
+      const span = document.createElement('span');
+      span.textContent = randomLine;
+      span.classList.add('line');
+      span.addEventListener('click', () => copyTextToClipboard(randomLine));
+      outputDiv.appendChild(span);
+    })
+    .catch(error => console.error('Error fetching text:', error));
+}
+
+function copyTextToClipboard(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  alert('Temporary phone number copied to clipboard: ' + text);
+}
+
+function search() {
+  var phone = document.getElementById("phoneInput").value.replace(/\+/g, ''); // Remove all '+' characters
+  var url = `https://sms-bomb.vercel.app/api/tempnuminbox.php?number=${phone}`;
+
+  fetch(url)
+    .then(response => response.text())
+    .then(data => {
+      var lines = data.split('\n');
+      var messageLines = [];
+      for (var i = 0; i < lines.length; i++) {
+        if (lines[i].includes('Message')) {
+          messageLines.push(lines[i]);
+          messageLines.push(lines[i+1]); // Add the line below 'Message' line
+        }
+      }
+      // Remove unwanted lines
+      messageLines = messageLines.filter(line => !line.includes('Message Lines:') && !line.includes('↻ Update Messages') && !line.includes('↻ Give me another number'));
+
+      // Insert additional line breaks between every two lines
+      var result = "";
+      for (var j = 0; j < messageLines.length; j += 2) {
+        result += messageLines[j] + "<br>" + messageLines[j + 1] + "<br><br>";
+      }
+      document.getElementById("result").innerHTML = result;
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+</body>
+</html>

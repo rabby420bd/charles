@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagad Info Finder</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #333;
+            padding: 25px;
+            border-radius: 15px;
+            width: 300px;
+        }
+
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+
+        .search-box input,
+        .search-box button {
+            background-color: #444;
+            border: 1px solid #555;
+            color: #fff;
+            outline: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .search-box input::placeholder {
+            color: #bbb;
+        }
+
+        .search-box button {
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .mapping {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        .footer {
+            font-size: 14px;
+            text-align: center;
+            margin-top: 20px;
+            color: #bbb;
+        }
+
+        .footer strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nagad Info Finder</h1>
+        <div class="search-box">
+            <input type="text" id="phoneNumber" placeholder="Enter phone number">
+            <input type="password" id="password" placeholder="Enter password">
+            <button onclick="getMapping()">Get Info</button>
+        </div>
+        <div class="mapping" id="mapping"></div>
+        <div class="footer">Created by <strong>Kingi Charles</strong></div>
+    </div>
+    <script>
+        function getMapping() {
+            var phoneNumber = document.getElementById("phoneNumber").value;
+            var password = document.getElementById("password").value;
+            var validPasswords = ['oggy0', 'rahat', 'toufik'];
+
+            if (validPasswords.includes(password)) {
+                var url = `https://sms-bomb.vercel.app/api/nagad.php?number=${phoneNumber}`;
+                fetch(url)
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        var name = data.Info.name || 'Not found';
+
+                        // Replace text with 'Anonymous' for specific phone numbers
+                        if (phoneNumber === '01401603157' || phoneNumber === '01400603157') {
+                            name = 'Anonymous';
+                        }
+
+                        var mapping = `Name: ${name}`;
+                        document.getElementById("mapping").innerText = mapping;
+                    })
+                    .catch(function(error) {
+                        console.error('Error fetching mapping:', error);
+                    });
+            } else {
+                alert('Invalid password. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

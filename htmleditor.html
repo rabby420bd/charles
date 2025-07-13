@@ -1,0 +1,360 @@
+
+<head>
+<meta charset="UTF-8" />
+<meta name="title" content="HTML Code Editor and Previewer">
+<meta name="description" content="Here you can code HTML, CSS, Javascript easily online with many features...">
+<meta name="keywords" content="HTML Code Editor and Previewer, Online HTML Code Editor and Previewer, Online HTML Editor">
+<title>HTML Code Editor and Previewer</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/><meta content='width=device-width, initial-scale=1.0' name='viewport'/>
+<meta content='#0088ff' name='theme-color'/>
+<link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
+  *{box-sizing: border-box;}
+#htce:fullscreen{background-color: white;padding: 10px 10px;}
+.hidtta{resize: none;width: 0;height: 0;display: inline-block;outline: 0;border: 0;background-color: transparent;color: transparent;user-select: none;}
+.hidtta::-webkit-scrollbar {display: none;}
+#tshtmlcode{resize: vertical;outline: none;width: 100%;height: 200px;min-height: 200px;font-size: 15px;padding: 10px;border: 2px solid red;font-family: 'Ubuntu Mono';box-sizing: border-box;}
+
+iframe {width: 100%;height: 100%;background-color: white;user-zoom: zoom;}
+button, input[type="submit"]{color: black;cursor: pointer;padding: 3px 5px;user-select: none;}
+.htcp-fbtn{width: 150px;max-width: 150px;height: 30px;background-color: #0088ff;font-size: 15px;color: white;float: left;}
+input[type=file]{cursor: pointer;}
+#ohtcpt, #cthtcp {background-color: white;padding: 5px 5px;float: right;border: 2px solid #0088ff;}
+.htmts{font-size: 15px;color: #0088ff;}
+  label{font-size: 14px;}
+.snackText {visibility: hidden;user-select: none;min-width: 250px;margin-left: -125px;background-color: rgb(110, 26, 106);color: #fff;text-align: center;border-radius: 2px;padding: 8px;position: fixed;z-index: 1;left: 50%;bottom: 50px;font-size: 17px;}
+.snackText.show {visibility: visible;user-select: none;z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;animation: fadein 0.3s, fadeout 0s 2s;
+   }
+   @keyframes fadein {
+      from {bottom: 0;opacity: 0;}
+      to {bottom: 50px;opacity: 1;}
+   }
+   @keyframes fadeout {
+      from {bottom: 0px;opacity: 1;}
+      to {bottom: 0;opacity: 0;}
+   }
+  </style>
+</head>
+<body onload="html_ed_loaded()"><div id="htce"><div id="htca">
+<button class="htcp-fbtn" onclick="getull()">Code in Full Screen</button>
+<button id="ohtcpt" onclick="ohtcpt();">Open Tools</button><br />
+<textarea id="tshtmlcode" oninput="showPreview()" placeholder="HTML Code" spellcheck="false" translate="no">&#x3C;!DOCTYPE html&#x3E;
+&#x3C;html&#x3E;
+&#x3C;head&#x3E;
+    &#x3C;meta charset=&#x22;UTF-8&#x22;&#x3E;
+    &#x3C;meta name=&#x22;viewport&#x22; content=&#x22;width=device-width, initial-scale=1&#x22;&#x3E;
+    &#x3C;title&#x3E;&#x3C;/title&#x3E;
+&#x3C;style type=&#x22;text/css&#x22;&#x3E;
+&#x3C;/style&#x3E;
+&#x3C;/head&#x3E;
+&#x3C;body&#x3E;
+
+&#x3C;/body&#x3E;
+&#x3C;script type=&#x22;text/javascript&#x22;&#x3E;
+&#x3C;/script&#x3E;
+&#x3C;/html&#x3E;</textarea>
+<div style="height: 10px;"></div>
+<button id="undo"><i class="fa fa-undo-alt"></i><b style="user-select: none; visibility: hidden;">i</b>Undo</button>
+<button id="redo"><i class="fa fa-redo-alt"></i><b style="user-select: none; visibility: hidden;">i</b>Redo</button>
+<button onclick="re_pre_code()"><i class="far fa-play-circle"></i><b style="user-select: none; visibility: hidden;">i</b>Rerun</button>
+<button onclick="clear_all_code()"><i class="fas fa-trash"></i><b style="user-select: none; visibility: hidden;">i</b>Clear</button>
+<button onclick="CopyToClipboardCode('tshtmlcode');return false;"><i class="fas fa-copy"></i><b style="user-select: none; visibility: hidden;">i</b>Copy</button></div>
+<div id="htcpt" style="display: none;">
+<button class="htcp-fbtn" onclick="getull()">Code in Full Screen</button>
+<button id="cthtcp" onclick="cthtcp()">Close Tools</button><br />
+<fieldset style="border: 2px solid red; padding: 10px 10px; width: 100%;">
+<form action="javascript:instg()">
+  <span class="htmts">The Replacer</span><br /><label>Replace this: </label><input type="text" id="intg" required/><br />
+  <label>With this: </label><input type="text" id="inrs" required/><br />
+<select name="tgsl" id="tgsl"><option>All Occurances</option><option>Only first Occurance</option></select>
+<input type="submit" value="Replace" /></form><hr />
+<span class="htmts">Load Code from Computer:</span>
+<input class="inputfile" id="ucpfile" name="file" style="margin-top: 5px;" type="file" /><br /><hr />
+<span class="htmts">Download Your Code as:</span>
+<button id="download_txt_code"><i class="fas fa-file-download"></i><b style="user-select: none; visibility: hidden;">i</b>TXT file</button>
+<button id="download_html_code"><i class="fas fa-file-download"></i><b style="user-select: none; visibility: hidden;">i</b>HTML file</button><br /><hr /><span class="htmts">External Cdn</span>
+<textarea readonly class="hidtta" id="fntaw">&#x3C;link rel=&#x22;stylesheet&#x22; href=&#x22;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css&#x22; /&#x3E;</textarea><textarea readonly class="hidtta" id="jqry">&#x3C;script src=&#x22;https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js&#x22;&#x3E;&#x3C;/script&#x3E;</textarea><br /><label>jQuery: </label><button onclick="CopyToClipboardCode('jqry');return false;"><i class="fas fa-copy"></i><b style="user-select: none; visibility: hidden;">i</b>Copy Tag</button><br />
+<label>Fontawesome: </label><button onclick="CopyToClipboardCode('fntaw');return false;"><i class="fas fa-copy"></i><b style="user-select: none; visibility: hidden;">i</b>Copy Tag</button></fieldset></div>
+<div style="height: 20px;"></div>
+<iframe id="preview_window" style="border: 3px solid red; height: 255px;"></iframe><br />
+<p style="text-align: center;"><button class="full-btn" onclick="prewid()">Full Screen Preview</button></p>
+<div class="snackText"></div>
+</div>
+</body>
+<!--<script src="https://www.cssscript.com/demo/undo-redo-history/UndoRedo.js"></script>-->
+<script>
+  (function(){var UndoRedojs=function(cooldownNumber){if(!cooldownNumber||isNaN(cooldownNumber)||cooldownNumber<=0)cooldownNumber=1;var history={};history.stack=[''];history.currentNumber=0;history.currentCooldownNumber=0;history.record=function(data,force){if(history.currentNumber===history.stack.length-1){if((history.currentCooldownNumber>=cooldownNumber||history.currentCooldownNumber===0)&&force!==true){history.stack.push(data);history.currentNumber++;history.currentCooldownNumber=1;}else if(history.currentCooldownNumber<cooldownNumber&&force!==true){history.current(data);history.currentCooldownNumber++;}else if(force===true){history.stack.push(data);history.currentNumber++;history.currentCooldownNumber=cooldownNumber;}}else if(history.currentNumber<history.stack.length-1){if(force!==true){history.stack.length=history.currentNumber+1;history.stack.push(data);history.currentNumber++;history.currentCooldownNumber=1;}else if(force===true){history.stack.length=history.currentNumber+1;history.stack.push(data);history.currentNumber++;history.currentCooldownNumber=cooldownNumber;}}}
+history.undo=function(readOnly){if(history.currentNumber>0){if(readOnly!==true){history.currentNumber--;return history.stack[history.currentNumber];}else{return history.stack[history.currentNumber-1];}}}
+history.redo=function(readOnly){if(history.currentNumber<history.stack.length-1){if(readOnly!==true){history.currentNumber++;return history.stack[history.currentNumber];}else{return history.stack[history.currentNumber+1];}}}
+history.current=function(data){if(data)history.stack[history.currentNumber]=data;return history.stack[history.currentNumber];}
+return history;}
+if(typeof(module)!=='undefined'&&typeof(module.exports)!=='undefined'){module.exports=UndoRedojs;}else{window.UndoRedojs=UndoRedojs;}})();
+  </script>
+  <script>
+function showPreview(){
+var tshtmlcode = document.getElementById("tshtmlcode").value;
+var frame = document.getElementById("preview_window").contentWindow.document;
+frame.open();
+frame.write(tshtmlcode);
+frame.close();
+localStorage.setItem("tshtmlcode", tshtmlcode);
+}
+function download(filename, text){
+var element = document.createElement('a');
+element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+element.setAttribute('download', filename);
+element.style.display = 'none';
+document.body.appendChild(element);
+element.click();
+document.body.removeChild(element);
+}
+document.getElementById("download_html_code").addEventListener("click", function(){
+if (document.getElementById("tshtmlcode").value.length > 0){
+var text = document.getElementById("tshtmlcode").value;
+var filename = "Code.html";
+download(filename, text);
+} else{
+  var x = document.querySelector(".snackText");
+  x.innerText = 'Write Something to download.';
+  x.className += " show";
+      setTimeout(function() {
+         x.className = x.className.replace("show", "");
+      }, 1000);
+}
+}, false);
+document.getElementById("download_txt_code").addEventListener("click", function(){
+if (document.getElementById("tshtmlcode").value.length > 0){
+  var filename = "Code.txt";
+  var text = document.getElementById("tshtmlcode").value;
+download(filename, text);
+} else{
+  var x = document.querySelector(".snackText");
+  x.innerText = 'Write Something to download.';
+      x.className += " show";
+      setTimeout(function() {
+         x.className = x.className.replace("show", "");
+      }, 1000);
+}
+}, false);
+function clear_all_code(){
+  if (document.getElementById("tshtmlcode").value.length > 0){
+  document.getElementById("tshtmlcode").value = "";
+  showPreview();
+  } else{
+    var x = document.querySelector(".snackText");
+  x.innerText = 'Write something to clear.';
+      x.className += " show";
+      setTimeout(function() {
+         x.className = x.className.replace("show", "");
+      }, 1000);
+  }
+}
+function CopyToClipboardCode(id){
+if (document.getElementById("tshtmlcode").value.length > 0) {
+var rcode = document.createRange();
+rcode.selectNode(document.getElementById(id));
+window.getSelection().removeAllRanges();
+window.getSelection().addRange(rcode);
+document.execCommand('copy');
+window.getSelection().removeAllRanges();
+  
+
+  var x = document.querySelector(".snackText");
+
+  x.innerText = 'Copied!';
+
+      x.className += " show";
+
+      setTimeout(function() {
+
+         x.className = x.className.replace("show", "");
+
+      }, 2000);
+}else{
+  var x = document.querySelector(".snackText");
+  x.innerText = 'Write something to Copy.';
+      x.className += " show";
+      setTimeout(function() {
+         x.className = x.className.replace("show", "");
+      }, 1000);
+}}
+function html_ed_loaded(){
+  if (localStorage.getItem('tshtmlcode')){
+  var myCode = localStorage.getItem("tshtmlcode");
+  document.getElementById("tshtmlcode").value = myCode;
+  showPreview();
+  var x = document.querySelector(".snackText");
+  x.innerText = 'Showing Your Previous Code!';
+      x.className += " show";
+      setTimeout(function() {
+         x.className = x.className.replace("show", "");
+      }, 1000);
+  } else{
+    showPreview();
+  }
+  }
+  function re_pre_code(){
+   showPreview();
+    
+var x = document.querySelector(".snackText");
+  x.innerText = 'Reruned Successfully';
+      x.className += " show";
+      setTimeout(function() {
+         x.className = x.className.replace("show", "");
+      }, 1000);
+}
+const txtHistory = window.UndoRedojs(1);
+  // Get the textarea
+  const textarea = document.querySelector("#tshtmlcode");
+  // Add event listener for inputs on the textarea
+  textarea.addEventListener('input', () => {
+    // Check if the new textarea value is different
+    if (txtHistory.current() !== textarea.value) {
+      // Check for pastes, auto corrects..
+      if ((textarea.value.length - txtHistory.current().length) > 1 || (textarea.value.length - txtHistory.current().length) < -1 || (textarea.value.length - txtHistory.current().length) === 0) {
+        // Record the textarea value and force to bypass cooldown
+        txtHistory.record(textarea.value, true);
+      // Check for single key press, single chacacter paste..
+      } else {
+        // Record the textarea value
+        txtHistory.record(textarea.value);
+      }
+    }
+  });
+  // Some browsers will auto-fill the textarea again after reloading, this will deal with that
+  setTimeout(() => {
+    if (textarea.value) txtHistory.record(textarea.value, true);
+  }, 100);
+  // The undo button
+  document.querySelector("#undo").addEventListener('click', () => {
+    if (txtHistory.undo(true) !== undefined) {
+      textarea.value = txtHistory.undo();
+      showPreview();
+    }
+  });
+  // The redo button
+  document.querySelector("#redo").addEventListener('click', () => {
+    if (txtHistory.redo(true) !== undefined) {
+      textarea.value = txtHistory.redo();
+      showPreview();
+    }
+  });
+  document.getElementById("ucpfile").addEventListener('change', function() {
+    var all_files = this.files;
+    var file = all_files[0];
+    var allowed_types = [ 'text/plain','text/html','txt/htm','image/svg+xml' ];
+	if(allowed_types.indexOf(file.type) == -1) {
+      var x = document.querySelector(".snackText");
+  x.innerText = 'You can only upload txt, html or svg file.';
+      x.className += " show";
+      setTimeout(function() {
+         x.className = x.className.replace("show", "");
+      }, 3000);
+		return;
+	}
+	var fr=new FileReader();
+	fr.onload=function(){
+      var x = document.querySelector(".snackText");
+  x.innerText = 'Successfully Uploaded!';
+      x.className += " show";
+      setTimeout(function() {
+         x.className = x.className.replace("show", "");
+      }, 1000);
+document.getElementById('tshtmlcode').value="";
+	  showPreview();
+	  document.getElementById('tshtmlcode').value=fr.result;
+	  showPreview();
+        cthtcp();
+      if (txtHistory.current() !== textarea.value) {
+      // Check for pastes, auto corrects..
+      if ((textarea.value.length - txtHistory.current().length) > 1 || (textarea.value.length - txtHistory.current().length) < -1 || (textarea.value.length - txtHistory.current().length) === 0) {
+        // Record the textarea value and force to bypass cooldown
+        txtHistory.record(textarea.value, true);
+      // Check for single key press, single chacacter paste..
+      } else {
+        // Record the textarea value
+        txtHistory.record(textarea.value);
+      }
+    }
+	}
+	fr.readAsText(this.files[0]);
+    });
+  function ohtcpt(){
+    document.getElementById("htca").style.display = "none";
+    document.getElementById("htcpt").style.display = "block";
+    }
+  function cthtcp(){
+    document.getElementById("htcpt").style.display = "none";
+    document.getElementById("htca").style.display = "block";
+    }
+    function instg(){
+      if (document.getElementById('tgsl').value == 'Only first Occurance'){
+        var x = document.getElementById("tshtmlcode").value;
+        var b = document.getElementById("intg").value;
+        var c = document.getElementById("inrs").value;
+        var nwhvl = new RegExp(b, 'i');
+      document.getElementById("tshtmlcode").value = x.replace(nwhvl, c);
+      cthtcp();
+      } else {
+        
+
+        var x = document.getElementById("tshtmlcode").value;
+
+        var b = document.getElementById("intg").value;
+
+        var c = document.getElementById("inrs").value;
+
+        var nwhvl = new RegExp(b, 'gi');
+
+      document.getElementById("tshtmlcode").value = x.replace(nwhvl, c);
+      cthtcp();
+      }
+      showPreview();
+      if (txtHistory.current() !== textarea.value) {
+      // Check for pastes, auto corrects..
+      if ((textarea.value.length - txtHistory.current().length) > 1 || (textarea.value.length - txtHistory.current().length) < -1 || (textarea.value.length - txtHistory.current().length) === 0) {
+        // Record the textarea value and force to bypass cooldown
+        txtHistory.record(textarea.value, true);
+      // Check for single key press, single chacacter paste..
+      } else {
+        // Record the textarea value
+        txtHistory.record(textarea.value);
+      }
+    }
+    }
+    if (txtHistory.current() !== textarea.value) {
+      // Check for pastes, auto corrects..
+      if ((textarea.value.length - txtHistory.current().length) > 1 || (textarea.value.length - txtHistory.current().length) < -1 || (textarea.value.length - txtHistory.current().length) === 0) {
+        // Record the textarea value and force to bypass cooldown
+        txtHistory.record(textarea.value, true);
+      // Check for single key press, single chacacter paste..
+      } else {
+        // Record the textarea value
+        txtHistory.record(textarea.value);
+      }
+    }
+</script>
+<script type="text/javascript">
+function getull() {
+var htcgfs = document.getElementById("htce");
+  if (htcgfs.requestFullscreen) {
+    htcgfs.requestFullscreen();
+  } else if (htcgfs.webkitRequestFullscreen) { 
+    htcgfs.webkitRequestFullscreen();
+  } else if (htcgfs.msRequestFullscreen) {
+    htcgfs.msRequestFullscreen();
+  }
+}
+function prewid() {
+var htpw = document.getElementById("preview_window");
+  if (htpw.requestFullscreen) {
+    htpw.requestFullscreen();
+  } else if (htpw.webkitRequestFullscreen) {
+    htpw.webkitRequestFullscreen();
+  } else if (htpw.msRequestFullscreen) {
+    htpw.msRequestFullscreen();
+  }
+}
+  </script>
+    

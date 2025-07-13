@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Download Terabox Videos</title>
+ <style>
+ body {
+ font-family: Arial, sans-serif;
+ margin: 0;
+ padding: 0;
+ background-image: url("https://w0.peakpx.com/wallpaper/954/960/HD-wallpaper-anonymous-shadow-anon-black-blackhat-conspiracy-dark-hack-hacker-mystery.jpg");
+ background-size: cover;
+ background-position: center;
+ background-attachment: fixed; /* Ensure the background image stays fixed while scrolling */
+ color: #fff; /* Light text color */
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
+ }
+ .overlay {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background-color: rgba(0, 0, 0, 0.7); /* Adjust the transparency here */
+ z-index: -1; /* Ensure the overlay is behind the content */
+ }
+ .header {
+ text-align: center;
+ padding: 20px 0;
+ }
+ .header h1 {
+ margin: 0;
+ }
+ .search-container {
+ text-align: center;
+ margin: 20px 0;
+ }
+ input[type="text"] {
+ padding: 10px;
+ font-size: 16px;
+ border: 1px solid #ccc;
+ border-radius: 5px;
+ background-color: rgba(0, 0, 0, 0.6); /* Adjust the transparency here */
+ color: #fff; /* Light text color */
+ }
+ button {
+ padding: 10px 20px;
+ font-size: 16px;
+ background-color: #007bff;
+ color: #fff;
+ border: none;
+ border-radius: 5px;
+ cursor: pointer;
+ }
+ button:hover {
+ background-color: #0056b3;
+ }
+ #loadingIndicator {
+ display: none;
+ margin-top: 20px; /* Adjust the margin as needed */
+ text-align: center;
+ }
+ #result {
+ margin-top: 20px;
+ text-align: center;
+ }
+ a {
+ display: block;
+ padding: 10px 20px;
+ font-size: 16px;
+ background-color: #28a745;
+ color: #fff;
+ text-decoration: none;
+ border-radius: 5px;
+ }
+ a:hover {
+ background-color: #218838;
+ }
+ .description {
+ margin-top: auto;
+ padding: 20px;
+ background-color: rgba(0, 0, 0, 0.4); /* Adjust the transparency here */
+ text-align: center;
+ }
+ footer {
+ text-align: center;
+ padding: 10px 0;
+ background-color: rgba(0, 0, 0, 0.5); /* Adjust the transparency here */
+ color: #fff; /* Light text color */
+ }
+ 
+ .description p {
+ font-family: "Times New Roman", Times, serif;
+ font-style: italic;
+ font-size: 15px;
+ color: #ffcc66; /* Golden color */
+ margin: 0; /* Reset margin for the paragraph */
+ }
+ 
+ .fileName {
+ text-align: justify;
+ text-justify: inter-word;
+ overflow-wrap: break-word;
+ }
+ 
+ @media only screen and (max-width: 600px) {
+ /* Adjust thumbnail size for smaller screens */
+ img {
+ max-width: 100%;
+ height: auto;
+ }
+ }
+ </style>
+ </head>
+ <body>
+ <div class="overlay"></div>
+ <div class="header">
+ <h1>Terabox Video Downloader</h1>
+ </div>
+ <div class="search-container">
+ <input type="text" id="linkInput" placeholder="Enter Terabox video link">
+ <button onclick="searchVideo()">Search</button>
+ </div>
+ <div id="loadingIndicator">Loading...</div>
+ <div id="result"></div>
+ <div class="description">
+ <p>This is the best Terabox video downloader website. You can easily download any Terabox video from this website. There are no limits or restrictions for downloading Terabox videos from our website.</p>
+ </div>
+ 
+ <footer>
+ <p>Created by Kingi Charles</p>
+ </footer>
+ 
+ <script>
+ async function searchVideo() {
+ const linkInput = document.getElementById('linkInput').value;
+ 
+ // Check if linkInput is empty
+ if (!linkInput.trim()) {
+ alert("Please enter a video link");
+ return;
+ }
+ 
+ // Show loading indicator
+ const loadingIndicator = document.getElementById('loadingIndicator');
+ loadingIndicator.style.display = 'block';
+ 
+ const apiUrl = `https://terabox-test1.vercel.app/api?data=${linkInput}`;
+ 
+ try {
+ const response = await fetch(apiUrl);
+ const data = await response.json();
+ const fileName = data.file_name;
+ const fileSize = data.size;
+ const thumbnail = data.thumb;
+ const downloadUrl = data.direct_link;
+ 
+ const resultDiv = document.getElementById('result');
+ resultDiv.innerHTML = `
+ <div>
+ <h2 class="fileName">${fileName}</h2>
+ <p>File Size: ${fileSize}</p>
+ <img src="${thumbnail}" alt="Thumbnail">
+ <a href="${downloadUrl}" download>Download</a>
+ </div>
+ `;
+ } catch (error) {
+ console.error('Error fetching data:', error);
+ } finally {
+ // Hide loading indicator
+ loadingIndicator.style.display = 'none';
+ }
+ }
+ </script>
+ </body>
+ </html>
